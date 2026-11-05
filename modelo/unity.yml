@@ -1,0 +1,25 @@
+# Copie este arquivo para .github/workflows/unity.yml do jogo e ajuste project-path e unity-version.
+name: unity
+on:
+  pull_request:
+    paths: ['client/**', '.github/workflows/unity.yml']
+  push:
+    branches: [main]
+    paths: ['client/**', '.github/workflows/unity.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  checks: write
+concurrency:
+  group: unity-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  unity:
+    uses: Vvs2705/vstack-ci/.github/workflows/unity.yml@main
+    with:
+      project-path: client          # arkana: mobile-unity
+      unity-version: 6000.3.23f1    # a mesma de ProjectSettings/ProjectVersion.txt
+    secrets:
+      UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
